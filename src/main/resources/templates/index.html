@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bulk Mail Sender</title>
+</head>
+<body>
+<h1>Upload Excel File</h1>
+<form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
+    <label>Excel File:</label>
+    <input type="file" name="file" accept=".xlsx" required/><br><br>
+    <label>Attachment Files (optional):</label>
+    <input type="file" name="attachments" multiple/><br><br>
+    <button type="submit">Send Emails</button>
+</form>
+<p th:text="${message}"></p>
+</body>
+</html>

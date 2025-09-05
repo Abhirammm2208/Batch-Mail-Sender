@@ -1,0 +1,19 @@
+# Batch-Mail-Sender
+initgit
+add
+README.mdgit
+commit
+-m
+First commit
+git
+branch
+-M
+maingit
+remote
+add
+origin
+https://github.com/Abhirammm2208/Batch-Mail-Sender.gitgit
+push
+-u
+origin
+main
