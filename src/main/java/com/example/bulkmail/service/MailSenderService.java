@@ -4,6 +4,8 @@ import com.example.bulkmail.model.MailBatch;
 import com.example.bulkmail.model.MailItem;
 import com.example.bulkmail.repo.MailBatchRepository;
 import com.example.bulkmail.repo.MailItemRepository;
+import com.example.bulkmail.repo.MailLogRepository;
+import com.example.bulkmail.model.MailLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -24,6 +26,9 @@ public class MailSenderService {
     @Autowired
     private MailItemRepository mailItemRepository;
 
+    @Autowired
+    private MailLogRepository mailLogRepository;
+
     @Async
     public void sendBulkEmails(MailBatch mailBatch) {
         mailBatch.setStatus("SENDING");
@@ -40,6 +45,13 @@ public class MailSenderService {
             }
             mailItem.setMailBatch(mailBatch);
             mailItemRepository.save(mailItem);
+
+            // Log the sent email
+            MailLog log = new MailLog();
+            log.setEmail(mailItem.getEmail());
+            log.setBatchId(mailBatch.getId());
+            log.setDetails("Subject: " + mailItem.getSubject() + ", Message: " + mailItem.getMessage() + ", Status: " + mailItem.getStatus() + (mailItem.getAttachmentFile() != null ? ", Attachment: " + mailItem.getAttachmentFile() : ""));
+            mailLogRepository.save(log);
         }
 
         mailBatch.setStatus("SENT");
@@ -60,6 +72,7 @@ public class MailSenderService {
                 helper.addAttachment(file.getName(), file);
             }
         }
-        mailSender.send(mimeMessage);
+    mailSender.send(mimeMessage);
+    System.out.println("Mail sent to: " + mailItem.getEmail());
     }
 }

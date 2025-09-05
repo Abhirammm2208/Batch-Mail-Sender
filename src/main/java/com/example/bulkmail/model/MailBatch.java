@@ -17,4 +17,7 @@ public class MailBatch {
 
     @OneToMany(mappedBy = "mailBatch", cascade = CascadeType.ALL)
     private List<MailItem> mailItems;
+
+    @Lob
+    private byte[] excelFile;
 }

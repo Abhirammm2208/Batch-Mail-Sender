@@ -17,6 +17,9 @@ public class ExcelService {
         MailBatch mailBatch = new MailBatch();
         List<MailItem> mailItems = new ArrayList<>();
 
+        // Store the Excel file bytes
+        mailBatch.setExcelFile(file.getBytes());
+
         try (XSSFWorkbook workbook = new XSSFWorkbook(file.getInputStream())) {
             var sheet = workbook.getSheetAt(0);
             for (int i = 1; i <= sheet.getLastRowNum(); i++) {
