@@ -16,11 +16,14 @@ public class MailItem {
     private String message;
     @Column(columnDefinition = "text")
     private String attachmentFile;
-    private String status; // e.g., PENDING, SENDING, SENT, FAILED
+
+    @Enumerated(EnumType.STRING)
+    private MailStatus status;
+
     @Column(columnDefinition = "text")
     private String errorMessage;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mail_batch_id")
     private MailBatch mailBatch;
 }

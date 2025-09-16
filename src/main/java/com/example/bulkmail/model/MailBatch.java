@@ -10,12 +10,14 @@ public class MailBatch {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(columnDefinition = "text")
-    private String status; // e.g., PENDING, SENDING, SENT, FAILED
+
+    @Enumerated(EnumType.STRING)
+    private MailStatus status;
+
     @Column(columnDefinition = "text")
     private String errorMessage;
 
-    @OneToMany(mappedBy = "mailBatch", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "mailBatch", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<MailItem> mailItems;
 
     @Lob

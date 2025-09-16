@@ -2,6 +2,7 @@ package com.example.bulkmail.service;
 
 import com.example.bulkmail.model.MailBatch;
 import com.example.bulkmail.model.MailItem;
+import com.example.bulkmail.model.MailStatus;
 import com.example.bulkmail.repo.MailBatchRepository;
 import com.example.bulkmail.repo.MailItemRepository;
 import com.example.bulkmail.repo.MailLogRepository;
@@ -31,16 +32,16 @@ public class MailSenderService {
 
     @Async
     public void sendBulkEmails(MailBatch mailBatch) {
-        mailBatch.setStatus("SENDING");
+    mailBatch.setStatus(MailStatus.SENDING);
         mailBatchRepository.save(mailBatch);
 
         List<MailItem> mailItems = mailBatch.getMailItems();
         for (MailItem mailItem : mailItems) {
             try {
                 sendEmail(mailItem);
-                mailItem.setStatus("SENT");
+                mailItem.setStatus(MailStatus.SENT);
             } catch (Exception e) {
-                mailItem.setStatus("FAILED");
+                mailItem.setStatus(MailStatus.FAILED);
                 mailItem.setErrorMessage(e.getMessage());
             }
             mailItem.setMailBatch(mailBatch);
@@ -49,12 +50,12 @@ public class MailSenderService {
             // Log the sent email
             MailLog log = new MailLog();
             log.setEmail(mailItem.getEmail());
-            log.setBatchId(mailBatch.getId());
+            log.setMailBatch(mailBatch);
             log.setDetails("Subject: " + mailItem.getSubject() + ", Message: " + mailItem.getMessage() + ", Status: " + mailItem.getStatus() + (mailItem.getAttachmentFile() != null ? ", Attachment: " + mailItem.getAttachmentFile() : ""));
             mailLogRepository.save(log);
         }
 
-        mailBatch.setStatus("SENT");
+    mailBatch.setStatus(MailStatus.SENT);
         mailBatchRepository.save(mailBatch);
     }
 

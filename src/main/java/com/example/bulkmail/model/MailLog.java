@@ -15,5 +15,7 @@ public class MailLog {
     @Column(columnDefinition = "text")
     private String details; // JSON or plain text of what was sent
 
-    private Long batchId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mail_batch_id")
+    private MailBatch mailBatch;
 }
