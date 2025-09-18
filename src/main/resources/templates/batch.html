@@ -1,14 +1,210 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bulk Mail Sender</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            background: #26252500
+           
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 32px 16px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+        .header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .excel-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(45deg, #217346, #0f5132);
+            border-radius: 8px;
+            position: relative;
+            margin-right: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+        }
+        .excel-icon::before {
+            content: 'XL';
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            color: #e6ffe6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+            overflow: hidden;
+            margin-bottom: 32px;
+        }
+        .card-header {
+            background: linear-gradient(90deg, #28a745 0%, #218838 100%);
+            padding: 24px 32px;
+        }
+        .card-header h2 {
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        .form-content {
+            padding: 32px;
+        }
+        .form-group {
+            margin-bottom: 24px;
+        }
+        .form-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #222;
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .form-label .excel-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            font-size: 1rem;
+        }
+        .form-label .optional {
+            font-size: 0.9rem;
+            color: #888;
+            margin-left: 8px;
+            font-weight: normal;
+        }
+        .file-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background: #f8f9fa;
+            font-size: 1rem;
+            margin-bottom: 8px;
+        }
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #28a745 0%, #218838 100%);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.1rem;
+            padding: 16px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(40,167,69,0.15);
+            cursor: pointer;
+            margin-top: 16px;
+            transition: background 0.2s;
+        }
+        .submit-btn:hover {
+            background: linear-gradient(90deg, #218838 0%, #28a745 100%);
+        }
+        .features {
+            display: flex;
+            gap: 24px;
+            margin-top: 32px;
+        }
+        .feature-card {
+            background: rgba(255,255,255,0.95);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 24px;
+            flex: 1;
+            min-width: 220px;
+        }
+        .feature-title {
+            font-weight: bold;
+            color: #218838;
+            margin-bottom: 8px;
+        }
+        .feature-desc {
+            color: #444;
+            font-size: 0.98rem;
+        }
+        @media (max-width: 900px) {
+            .features {
+                flex-direction: column;
+                gap: 16px;
+            }
+            .form-content {
+                padding: 16px;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>Upload Excel File</h1>
-<form action="#" th:action="@{/upload}" method="post" enctype="multipart/form-data">
-    <input type="file" name="file" accept=".xlsx" required/>
-    <button type="submit">Send Emails</button>
-</form>
-<p th:text="${message}"></p>
+    <div class="container">
+        <div class="header">
+            <div class="header-flex">
+                <div class="excel-icon"></div>
+                <span class="main-title">Bulk Mail Sender</span>
+            </div>
+            <p class="subtitle">Upload your Excel file and send personalized emails to multiple recipients with ease</p>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <h2>Upload & Send</h2>
+            </div>
+            <div class="form-content">
+                <form action="#" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label class="form-label"><div class="excel-icon"></div> Excel File (.xlsx) <span style="color:#d00; margin-left:4px;">*</span></label>
+                        <input type="file" name="file" accept=".xlsx" required class="file-input" />
+                        <small style="color:#888;">Upload an Excel file containing recipient email addresses and message content</small>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label"><span style="font-size:1.2em; margin-right:8px;">📎</span> Attachment Files <span class="optional">(Optional)</span></label>
+                        <input type="file" name="attachments" multiple class="file-input" />
+                        <small style="color:#888;">Select multiple files to attach to your emails (documents, images, etc.)</small>
+                    </div>
+                    <button type="submit" class="submit-btn">Send Bulk Emails</button>
+                </form>
+            </div>
+        </div>
+        <div class="features">
+            <div class="feature-card">
+                <div class="feature-title">Easy Excel Integration</div>
+                <div class="feature-desc">Simply upload your .xlsx file with recipient data and we'll handle the rest</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Multiple Attachments</div>
+                <div class="feature-desc">Attach documents, images, and files to personalize your bulk emails</div>
+            </div>
+            <div class="feature-card">
+                <div class="feature-title">Bulk Processing</div>
+                <div class="feature-desc">Send hundreds of personalized emails efficiently with one click</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
