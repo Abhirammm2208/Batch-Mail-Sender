@@ -1,0 +1,53 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: email_sender_db
+    environment:
+      POSTGRES_DB: Email_sender
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Abhiram@123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - email_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Spring Boot Application
+  app:
+    build: .
+    container_name: email_sender_app
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/Email_sender
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=Abhiram@123
+      - MAIL_HOST=smtp.gmail.com
+      - MAIL_PASSWORD=bckjamckbpfehrlj
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - email_network
+    volumes:
+      - app_uploads:/app/uploads
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  app_uploads:
+
+networks:
+  email_network:
+    driver: bridge
