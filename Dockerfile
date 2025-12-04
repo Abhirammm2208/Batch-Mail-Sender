@@ -1,5 +1,5 @@
-# Use OpenJDK 17 as base image (compatible with your Java 19 code)
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin JDK 17 as base image
+FROM eclipse-temurin:17-jdk-jammy
 
 # Set working directory in container
 WORKDIR /app
